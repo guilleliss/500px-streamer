@@ -1,0 +1,31 @@
+extends layout
+
+block content
+
+	h1= title
+
+	div#streamer
+
+	script(type="text/javascript", src="/socket.io/socket.io.js")
+	script(type="text/javascript", src="https://code.jquery.com/jquery-1.9.1.min.js")
+
+	script(type='text/javascript', defer="defer").
+		$(document).ready(function() {
+			var socket = io.connect('http://pics-stream.ap01.aws.af.cm');
+			//- var socket = io.connect('http://localhost:3000');
+			var streamer = $('#streamer');
+ 
+			socket.on('fresh_pic', function(data) {
+
+				var url_base = 'http://500px.com/photo/';
+
+				$('<img />').attr({
+					src: data.value['image_url']
+				}).appendTo($('<a />').attr({
+					href: url_base+data.value['id'],
+					target: '_blank'
+				}).prependTo($('#streamer')));
+
+			});
+
+		});

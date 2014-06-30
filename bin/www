@@ -1,0 +1,61 @@
+#!/usr/bin/env node
+var debug = require('debug')('500px-test');
+var app = require('../app');
+
+app.set('port', process.env.PORT || 3000);
+
+var server = app.listen(app.get('port'), function() {
+  debug('Express server listening on port ' + server.address().port);
+});
+
+var io = require('socket.io').listen(server);
+
+// io.configure(function () { 
+//       io.set("transports", ["xhr-polling"]); 
+//       io.set("polling duration", 10); 
+//     });
+
+
+// TODO: Move to another file!
+
+io.set('log level', 1);
+
+/* 500px API stuff */
+consumerKey = "67OCFqsvMd9r1DvdfPrOcrjJA17XptHNFsaTOPwM";
+var API500px = require('500px').API500px;
+var api500px = new API500px(consumerKey);
+
+var MAX_PICS = 50;
+saved_pics = [];
+
+setInterval(function() {
+	console.log(io.sockets.clients().length);
+	if (io.sockets.clients().length > 0) {
+		api500px.photos.getFreshToday({'sort': 'created_at'},  function(error, results) {
+			if (error) {
+				console.log("Error requesting photos from API.");
+				return;
+			}
+
+
+			api_photos = results['photos'];
+			for (var i in api_photos) {
+				if(saved_pics.indexOf(api_photos[i]['id']) == -1) {
+					var new_pic = {
+						id: api_photos[i]['id'],
+						image_url: api_photos[i]['image_url'],
+						url: api_photos[i]['url']
+					};
+					io.sockets.emit("fresh_pic", { value: new_pic } );
+					if(saved_pics.length > MAX_PICS) {
+						saved_pics.pop();
+					}
+					saved_pics.unshift(api_photos[i]['id']);
+				}
+			}
+		})
+	} else {
+		saved_pics = [];		
+	};
+}, 1000);
+
