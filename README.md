@@ -13,7 +13,7 @@ Online demo at [http://pics-stream.ap01.aws.af.cm/stream](http://pics-stream.ap0
 
 ## Usage
 
-	git clone https://github.com/guilleliss/500px-streamer.git
+	git clone https://github.com/guilleliss/500px-streamer.git path/to/proyect/
 	cd path/to/proyect/
 	npm install
 	npm start
