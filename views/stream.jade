@@ -11,8 +11,8 @@ block content
 
 	script(type='text/javascript', defer="defer").
 		$(document).ready(function() {
-			var socket = io.connect('http://pics-stream.ap01.aws.af.cm');
-			//- var socket = io.connect('http://localhost:3000');
+			//- var socket = io.connect('http://pics-stream.ap01.aws.af.cm');
+			var socket = io.connect('http://localhost:3000');
 			var streamer = $('#streamer');
  
 			socket.on('fresh_pic', function(data) {
