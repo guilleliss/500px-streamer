@@ -29,7 +29,6 @@ var MAX_PICS = 50;
 saved_pics = [];
 
 setInterval(function() {
-	console.log(io.sockets.clients().length);
 	if (io.sockets.clients().length > 0) {
 		api500px.photos.getFreshToday({'sort': 'created_at'},  function(error, results) {
 			if (error) {
