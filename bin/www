@@ -45,7 +45,7 @@ setInterval(function() {
 						image_url: api_photos[i]['image_url'],
 						url: api_photos[i]['url']
 					};
-					io.sockets.emit("fresh_pic", { value: new_pic } );
+					io.sockets.emit("fresh pic", { value: new_pic } );
 					if(saved_pics.length > MAX_PICS) {
 						saved_pics.pop();
 					}
