@@ -34,16 +34,31 @@ setInterval(function() {
 			if (error) {
 				console.log("Error requesting photos from API.");
 				return;
-			}
-
+			}			
 
 			api_photos = results['photos'];
+
 			for (var i in api_photos) {
 				if(saved_pics.indexOf(api_photos[i]['id']) == -1) {
+					var user_full_name = api_photos[i]['user']['username'];
+					if(api_photos[i]['user']['firstname'] && api_photos[i]['user']['lastname']) {
+						user_full_name = api_photos[i]['user']['firstname'] + " " + api_photos[i]['user']['lastname'];
+					}
 					var new_pic = {
 						id: api_photos[i]['id'],
+						name: api_photos[i]['name'],
 						image_url: api_photos[i]['image_url'],
-						url: api_photos[i]['url']
+						url: api_photos[i]['url'], 
+						latitude: api_photos[i]['latitude'],
+						longitude: api_photos[i]['longitude'],
+						user_full_name: user_full_name,
+						username: api_photos[i]['user']['username'],
+						rating: api_photos[i]['rating'],
+						votes_count: api_photos[i]['votes_count'],
+						favorites_count: api_photos[i]['favorites_count'],
+						times_viewed: api_photos[i]['times_viewed'],
+						camera: api_photos[i]['camera'],
+						lens: api_photos[i]['lens']
 					};
 					io.sockets.emit("fresh pic", { value: new_pic } );
 					if(saved_pics.length > MAX_PICS) {

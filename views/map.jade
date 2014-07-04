@@ -1,0 +1,81 @@
+extends layout
+
+block content
+
+	div#map-canvas
+
+	script(type="text/javascript", src="/socket.io/socket.io.js")
+	script(type="text/javascript", src="https://code.jquery.com/jquery-1.9.1.min.js")
+	script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDH78oK3DLTs9G1xfH798jO-5ok2FUvFQ")
+
+	script(type='text/javascript').
+		$(document).ready(function() {
+			var socket = io.connect();
+
+			var url_photo_base = 'http://500px.com/photo/'; 
+			var url_base = 'http://500px.com/'; 
+
+			socket.on('fresh pic', function(data) {
+
+				if(data.value['latitude'] && data.value['longitude']) {
+
+					console.log(data.value['latitude']);
+
+					var myLatlng = new google.maps.LatLng(data.value['latitude'],data.value['longitude']);				
+
+					var cameraString = '';
+					var lensString = '';
+
+					if(data.value['camera']) {
+						cameraString = '<div>Camera: '+ data.value['camera'] +'</div>';
+					}
+					if(data.value['lens']) {
+						lensString = '<div>Lens: '+ data.value['lens'] +'</div>';
+					}
+
+					var contentString = '<div class="infoContent">'+
+						'<div class="infoPic">'+
+						'<a target="_blank" href="' + url_photo_base + data.value['id'] + '">' +
+						'<img src="'+data.value['image_url']+'">'+
+						'</a>'+
+						'</div>'+
+						'<div class="infoDetail">'+
+						'<a class="userLink" target="_blank" href="' + url_base + data.value['username'] + '">' +
+						data.value['user_full_name']+
+						'</a>'+
+						'<div>Times viewed: '+ data.value['times_viewed'] +'</div>'+
+						cameraString+
+						lensString+
+						'</div>'+
+						'</div>';
+
+					var infowindow = new google.maps.InfoWindow({
+						content: contentString
+					});
+
+					var marker = new google.maps.Marker({
+						position: myLatlng,
+						map: map,
+						animation: google.maps.Animation.DROP,
+						title: data.value['name']
+					});
+
+					google.maps.event.addListener(marker, 'click', function() {
+						infowindow.open(map,marker);
+					});
+				}
+
+			});
+
+		});
+
+		var mapOptions = {
+			center: new google.maps.LatLng(0, 0),
+			zoom: 2
+		};
+		var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+	style(type="text/css").
+		html { height: 100% }
+		body { height: 100%; margin: 0; padding: 0 }
+		#map-canvas { height: 100% }

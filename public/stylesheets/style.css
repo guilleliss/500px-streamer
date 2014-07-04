@@ -5,3 +5,23 @@ body {
 a {
   color: #00b7ff;
 }
+.infoPic {
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+/* Fix for IE7 */
+  *display: inline;
+/* Fix for IE7 */
+}
+.infoDetail {
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+/* Fix for IE7 */
+  *display: inline;
+/* Fix for IE7 */
+  padding: 0 20px;
+}
+.infoDetail a.userLink {
+  margin-bottom: 10px;
+}
