@@ -28,8 +28,19 @@ var api500px = new API500px(consumerKey);
 var MAX_PICS = 50;
 saved_pics = [];
 
+
+/* We count connected users so we call 500px only if clients */
+var connectCounter = 0;
+
+io.on("connection", function(s){ 
+   connectCounter += 1; 
+   s.on("disconnect", function(){
+     connectCounter -= 1;
+   });
+ });
+
 setInterval(function() {
-	if (io.sockets.clients().length > 0) {
+	if (connectCounter > 0) {
 		api500px.photos.getFreshToday({'sort': 'created_at'},  function(error, results) {
 			if (error) {
 				console.log("Error requesting photos from API.");
