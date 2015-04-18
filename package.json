@@ -6,7 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "express": "~4.2.0",
+    "express": "~4.12.3",
     "static-favicon": "~1.0.0",
     "morgan": "~1.0.0",
     "cookie-parser": "~1.0.1",
@@ -14,6 +14,7 @@
     "debug": "~0.7.4",
     "jade": "~1.3.0",
     "stylus": "0.42.3",
-    "socket.io": "~0.9.6"
+    "socket.io": "~0.9.6",
+    "500px": "~0.5.1"
   }
 }

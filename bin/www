@@ -22,7 +22,7 @@ io.set('log level', 1);
 
 /* 500px API stuff */
 consumerKey = "67OCFqsvMd9r1DvdfPrOcrjJA17XptHNFsaTOPwM";
-var API500px = require('500px').API500px;
+var API500px = require('500px');
 var api500px = new API500px(consumerKey);
 
 var MAX_PICS = 50;
